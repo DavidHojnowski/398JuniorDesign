@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="org.memes.dank.smarthouse.Init">
+
+    <Button
+        android:id="@+id/Test_Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Send Data"
+        android:visibility="visible"
+        android:onClick = "sendData"
+        tools:layout_constraintTop_creator="1"
+        android:layout_marginStart="121dp"
+        android:layout_marginTop="147dp"
+        tools:layout_constraintLeft_creator="1"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginLeft="121dp" />
+</android.support.constraint.ConstraintLayout>
