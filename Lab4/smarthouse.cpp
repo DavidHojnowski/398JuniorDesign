@@ -21,52 +21,182 @@ void smarthouse::write(const char* data){
 }
 
 void smarthouse::run(){
+	//Party boolean
+	bool party = false;
+	//Configure gpio/uart pins
+	system("/home/debian/Lab4/config.sh");
+	//Initialize GPIO pins:
 	//Rooms:
-	Gpio attic("");
-	Gpio bedroom1("");
-	Gpio bedroom2("");
-	Gpio bathroom("");
-	Gpio livroom("");
-	Gpio kitchen("");
+	Gpio attic1("71");
+	Gpio attic2("75");
+	Gpio attic3("66");
+	Gpio bedroom1("72");
+	Gpio bedroom2("73");
+	Gpio bathroom("74");
+	Gpio livroom("69");
+	Gpio kitchen("51");
 	//Other:
-	Gpio fan("");
-	Gpio heat("");
-	Gpio cold("");
-	Gpio laser("");
-
+	Gpio fan("70");
+	Gpio heat("112");
+	Gpio cold("110");
+	Gpio door("5");
+	
+	//Set all GPIO to out direction
+	//Rooms:
+	attic1.changeDirection("out");
+	attic2.changeDirection("out");
+	attic3.changeDirection("out");
+	bedroom1.changeDirection("out");
+	bedroom2.changeDirection("out");
+	bathroom.changeDirection("out");
+	livroom.changeDirection("out");
+	kitchen.changeDirection("out");
+	//Other:
+	fan.changeDirection("out");
+	heat.changeDirection("out");
+	cold.changeDirection("out");
+	door.changeDirection("out");
+	
+	//Initialize them all to off when the app starts
+	//Rooms:
+	attic1.set("1");
+	attic2.set("1");
+	attic3.set("1");
+	bedroom1.set("1");
+	bedroom2.set("1");
+	bathroom.set("1");
+	livroom.set("1");
+	kitchen.set("1");
+	//Other:
+	fan.set("0");
+	heat.set("1");
+	cold.set("1");
+	door.set("0");	
+	string fromESP;
+	string trimmed;
+	fromESP = read(100);
 
 	while(true){
-		string fromESP = read(4);
-			   if(!fromESP.compare("ATIC"){
-			   if(attic.get() == 1){
-			   
-			   }else{
-			   
-			   }
-			
-		} else if(!fromESP.compare("BED1"){
-		
-		} else if(!fromESP.compare("BED2"){	
-		
-		} else if(!fromESP.compare("BATH"){	
-		
-		} else if(!fromESP.compare("LVRM"){	
-		
-		} else if(!fromESP.compare("KCHN"){	
-		
-		} else if(!fromESP.compare("DOOR"){	
-		
-		} else if(!fromESP.compare("HEAT"){
-		
-		} else if(!fromESP.compare("COLD"){
+		fromESP = "";
+		trimmed = "";
+		fromESP = read(13);//TODO: accomodate for header info
+		fromESP = fromESP[9] + fromESP[10] + fromESP[11] + fromESP[12]; 
+		strcat();
+		cout << "Our string: " << fromESP << endl;
+		//9,10,11,12 index
+			if(!fromESP.compare("ATIC")){ //Turns on/off all attic lights
+				if(!attic1.get().compare("0")){
+					attic1.set("1");
+					attic2.set("1");
+					attic3.set("1");
+				}else{
+			   		attic1.set("0");
+			   		attic2.set("0");
+			   		attic3.set("0");
+				}	
+			}else if(!fromESP.compare("BED1")){//Turn on/off LEDs in Bedroom1
+				if(!bedroom1.get().compare("0")){
+					bedroom1.set("1");
+				}else{
+			   		bedroom1.set("0");
+				}
+			}else if(!fromESP.compare("BED2")){//Turn on/off LEDs in Bedroom2
+				if(!bedroom2.get().compare("0")){
+					bedroom2.set("1");
+				}else{
+			   		bedroom2.set("0");
+				}
+			}else if(!fromESP.compare("BATH")){//Turn on/off LEDs in Bathroom
+				if(!bathroom.get().compare("0")){
+					bathroom.set("1");
+				}else{
+			   		bathroom.set("0");
+				}
+			}else if(!fromESP.compare("LVRM")){//Turn on/off LEDs in Living Room
+				if(!livroom.get().compare("0")){
+					livroom.set("1");
+				}else{
+			   		livroom.set("0");
+				}
+			}else if(!fromESP.compare("KCHN")){//Turn on/off LEDs in Kitchen
+				if(!kitchen.get().compare("0")){
+					kitchen.set("1");
+				}else{
+			   		kitchen.set("0");
+				}
+			}else if(!fromESP.compare("DOOR")){//Lock/Unlock Door
+				if(!door.get().compare("0")){
+					door.set("1");
+				}else{
+			   		door.set("0");
+				}
+			}else if(!fromESP.compare("HEAT")){//Enable the model cooling system
+				if(!cold.get().compare("0")){ //if cold is on turn it off
+					cold.set("1");
+				} 
 				
-		} else if(!fromESP.compare("PRTY"){
-		
-		} else if(!fromESP.compare("HONN"){
+				if(!heat.get().compare("0")){
+					heat.set("1");
+					fan.set("1");
+				}else{
+			   		heat.set("0");
+			   		fan.set("0");
+				}
+			}else if(!fromESP.compare("COLD")){//Enable the model heating system
+				if(!heat.get().compare("0")){//if heat is on turn it off
+					heat.set("1");
+				} 
 				
-		} else if(!fromESP.compare("HOFF"){			
+				if(!cold.get().compare("0")){//if cold is on turn it off
+					cold.set("1");
+					fan.set("0");
+				}else{
+			   		cold.set("0");
+			   		fan.set("1");
+				}
+			}else if(!fromESP.compare("PRTY")){//Enables or disables party mode
+				if(!party){
+					party = true;
+				}else{
+					party = false;
+				}
+			}else if(!fromESP.compare("HOFF")){//Turn all components off
+					//Rooms:
+					attic1.set("1");
+					attic2.set("1");
+					attic3.set("1");
+					bedroom1.set("1");
+					bedroom2.set("1");
+					bathroom.set("1");
+					livroom.set("1");
+					kitchen.set("1");
+					//Other:
+					fan.set("0");
+					heat.set("1");
+					cold.set("1");
+					door.set("0");
+			}else if(!fromESP.compare("HONN")){//Turn all components on	
+					//Rooms:
+					attic1.set("0");
+					attic2.set("0");
+					attic3.set("0");
+					bedroom1.set("0");
+					bedroom2.set("0");
+					bathroom.set("0");
+					livroom.set("0");
+					kitchen.set("0");
+					//Other:
+					fan.set("0");
+					heat.set("0");
+					cold.set("1");
+					door.set("0");
+			}	
 			
-		}	
+			if(party){//TODO: PARTY MODE
+				//do party things
+			}
+			
+			
 	}
 }
 

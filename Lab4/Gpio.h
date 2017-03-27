@@ -4,8 +4,8 @@
 
 class Gpio{
   public:
-    std::string getState();
-    void setState(std::string outState);
+    std::string get();
+    void set(std::string outState);
     Gpio(std::string pin);
     void changeDirection(std::string dir);
     

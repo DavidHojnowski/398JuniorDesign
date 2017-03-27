@@ -9,7 +9,7 @@ class smarthouse{
 		smarthouse(int tty);
 		void write(const char* data);
 		string read(int bytes);
-		void smarthouse::run()
+		void run();
 		
 		~smarthouse();
 	private:

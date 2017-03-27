@@ -106,32 +106,37 @@ int main()
 	tty01.opendev(115200, FALSE);
 	std::string mesg;
 	//SEND AT COMMANDS
-	/*tty01.writemsg("AT+CIPMUX=1\r\n");
+	tty01.writemsg("AT+CIPMUX=1\r\n");
 	while ((mesg=tty01.readmsg(30))=="\0"){}
-	usleep(100000);//100ms
+	usleep(300000);//100ms
+	std::cout<<mesg<<std::endl;
 	tty01.writemsg("AT+CIPSERVER=1\r\n");
 	while ((mesg=tty01.readmsg(30))=="\0"){}
-	usleep(100000);//100ms
+	usleep(300000);//100ms
+	std::cout<<mesg<<std::endl;
 	tty01.writemsg("AT+CWMODE=1\r\n");
 	while ((mesg=tty01.readmsg(30))=="\0"){}
-	usleep(100000);//100ms
+	usleep(300000);//100ms
+	std::cout<<mesg<<std::endl;
 	tty01.writemsg("AT+CWJAP=\"iot_lab\",\"44FEC4DDB9\"");
 	while ((mesg=tty01.readmsg(40))=="\0"){}
-	usleep(100000);//100ms
+	usleep(300000);//100ms
+	std::cout<<mesg<<std::endl;
 	//Now Send Data
 	tty01.writemsg("AT+CIFSR\r\n");
-	while ((mesg=tty01.readmsg(20))=="\0"){}
-	usleep(100000);//100ms
-*/
+	while ((mesg=tty01.readmsg(40))=="\0"){}
+	usleep(300000);//100ms
+	std::cout<<mesg<<std::endl;
+
 	//while ((mesg=tty01.readmsg(100))=="\0"){}
 	//std::cout<<mesg<<std::endl;
 	//tty01.writemsg("AT+CIPSEND=0,12\r\n");
-	usleep(300000);//300ms
+	//usleep(300000);//300ms
 	//tty01.writemsg("Hello World!\r\n");
-	usleep(200000);//200ms
+	//usleep(200000);//200ms
 	//while ((mesg=tty01.readmsg(100))=="\0"){} //receive hello world dank memes back
 	//std::cout<<mesg<<std::endl;
-	usleep(200000);//200ms
+	//usleep(200000);//200ms
 	while(true){
 	while ((mesg=tty01.readmsg(20))=="\0"){} //receive message from PuTTy
 	//mesg = mesg.substr(12);
