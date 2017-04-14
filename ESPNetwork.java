@@ -15,15 +15,44 @@ import java.io.OutputStream; //for printwriter
 
 public class ESPNetwork implements Runnable {
     private Socket espSocket;
-    private final String PRESET_IP ="10.24.0.166" ;
+    private final String PRESET_IP ="10.24.0.223" ;
+    private String ipAddress;
     private final int PORT = 333;
     private PrintWriter toBeagle;
     private static final String TAG = Init.class.getSimpleName();
+    private boolean conected;
+
+    public ESPNetwork(String I_P){
+        ipAddress = I_P;
+        conected = false;
+    }
 
     public void run(){
         //Set thread priorty to be background to reduce resource consumption
         android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_BACKGROUND);
+        try {
+            InetAddress addr = InetAddress.getByName(PRESET_IP); //Hard coded IP
+            //InetAddress addr = InetAddress.getByName(ipAddress); IP that was enterd, but for whatever reason doesnt work
 
+            String hostName = addr.getHostName();
+
+            espSocket = new Socket(hostName, PORT);
+
+            OutputStream out = espSocket.getOutputStream();
+            toBeagle = new PrintWriter(out, true); //true for auto flushing of printwriter
+            //At this point could aslo create a buffered reader if you wanted to read in some data
+
+            //if the socket connets
+            //and we can write to it return true
+            conected = true; //this never ended up working
+       } catch (Exception e) {
+          Log.d(TAG, "Error opening a socket", e);
+       }
+    }
+
+    //not implemented
+   public boolean isConnected(){
+        return conected;
     }
 
     public boolean write(String msg){
@@ -33,7 +62,7 @@ public class ESPNetwork implements Runnable {
             succes = true;
         }
         catch(Exception e){
-            Log.d(TAG,"ALL exceptions",e);
+            Log.d(TAG,"Writing not working",e);
         }
         return succes;
     }
@@ -52,23 +81,5 @@ public class ESPNetwork implements Runnable {
         }
 
     }
-    public boolean makeSocket(String IP){
-        boolean open = false;
-        try{
-            InetAddress addr = InetAddress.getByName("10.24.0.166");
-            String hostName = addr.getHostName();
 
-            espSocket = new Socket(hostName, PORT);
-
-            OutputStream out = espSocket.getOutputStream();
-            toBeagle = new PrintWriter(out,true); //true for auto flushing of printwriter
-            //if the socket connets
-            //and we can write to it return true
-            open = true;
-        }
-        catch(Exception e){
-            Log.d(TAG,"Error opening a socket",e);
-        }
-        return open;
-    }
 }
